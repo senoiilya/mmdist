@@ -12,7 +12,10 @@ func (m msg) ServeHTTP(resp http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	msgHandler := msg("Hello from Web Server in Go")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "ui/html/main.html")
+	})
+
 	fmt.Println("Server is listening...")
-	http.ListenAndServe(":8080", msgHandler)
+	http.ListenAndServe(":8080", nil)
 }
