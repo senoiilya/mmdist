@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Главная страница</title>
+    <title>Template</title>
     <link rel="icon" href="" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
 </head>
 <body>
-<header>
-    <p>Здесь заголовок</p>
-</header>
+    <header>
+    {{ .Title }}
+    </header>
 <main>
-    <p>Здесь мейн</p>
+    {{ .Message }}
 </main>
 <footer>
-    <p>Здесь футер</p>
+    TestFooter
 </footer>
 </body>
 </html>
