@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	"mmdist/pkg"
@@ -73,7 +74,8 @@ func main() {
 		Title:   "New Page2",
 		Message: "Hello World!",
 	}
-	router := http.NewServeMux()
+	//router := http.NewServeMux()
+	router := mux.NewRouter()
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", layoutHandler)
 	router.HandleFunc("/test", testHandler)
