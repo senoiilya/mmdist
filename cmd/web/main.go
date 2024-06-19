@@ -6,6 +6,7 @@ import (
 	"log"
 	"mmdist/pkg"
 	"net/http"
+	"strconv"
 )
 
 var types = []string{pkg.PersonalComputerType, pkg.NotebookType, pkg.ServerType, "mono-block"}
@@ -18,6 +19,12 @@ type ViewData struct {
 type ViewData2 struct {
 	Title   string
 	Message []string
+}
+
+type ViewData3 struct {
+	Title   string
+	Message string
+	Id      int
 }
 
 // статичный файл
@@ -58,14 +65,39 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	// устаналвиваем какой HTTP - заголовок нам разрешён
 	w.Header().Set("Allow", http.MethodPost)
 
+	// упраление картой заголовков напрямую
+	//w.Header()["Date"] = nil
+
 	// проверка на метод POST
 	if r.Method != http.MethodPost {
-		w.WriteHeader(405)
-		w.Write([]byte("GET-метод запрещён!"))
+		// Не продвинутый подход к отправке ответа
+		//w.WriteHeader(405) // Записываем заголовок
+		//w.Write([]byte("GET-метод запрещён!"))
+		//return
+		http.Error(w, "Метод запрещён!", 405)
 		return
 	}
 
 	tmpl, _ := template.ParseFiles("./ui/html/login.html")
+	tmpl.Execute(w, data)
+}
+
+func newTestHandler(w http.ResponseWriter, req *http.Request) {
+	// Извлекаем значение параметра id из URL и попытаемся
+	// конвертировать строку в integer используя функцию strconv.Atoi(). Если его нельзя
+	// конвертировать в integer, или значение меньше 1, возвращаем ответ
+	// 404 - страница не найдена!
+	id, err := strconv.Atoi(req.URL.Query().Get("id"))
+	if err != nil || id < 1 {
+		http.NotFound(w, req)
+		return
+	}
+	data := ViewData3{
+		Title:   "New Page2",
+		Message: "Hello World!",
+		Id:      id,
+	}
+	tmpl, _ := template.ParseFiles("./ui/html/new-page.html")
 	tmpl.Execute(w, data)
 }
 
@@ -79,10 +111,7 @@ func main() {
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", layoutHandler)
 	router.HandleFunc("/test", testHandler)
-	router.HandleFunc("/new", func(w http.ResponseWriter, req *http.Request) {
-		tmpl, _ := template.ParseFiles("./ui/html/new-page.html")
-		tmpl.Execute(w, data)
-	})
+	router.HandleFunc("/new", newTestHandler)
 	router.HandleFunc("/edit", func(w http.ResponseWriter, req *http.Request) {
 		tmpl, _ := template.ParseFiles("./ui/html/template.html")
 		tmpl.Execute(w, data)
