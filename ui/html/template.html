@@ -12,7 +12,9 @@
     {{ .Title }}
     </header>
 <main>
-    {{ .Message }}
+    {{ range .Message }}
+        {{ . }}
+    {{ end }}
 </main>
 <footer>
     TestFooter
