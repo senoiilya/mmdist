@@ -1,0 +1,91 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+img {
+    aspect-ratio: 16/9 auto;
+}
+
+input,
+select {
+    max-width: 280px;
+}
+
+textarea {
+    max-width: 360px;
+}
+
+
+.custom-blog {
+    font-size: 4rem;
+    color: green;
+    background-color: darkturquoise ;
+}
+
+
+:root {
+    --primary-green: #00624a;
+    --primary-logo: rgb(233, 250, 134);
+    --primary-text-two: rgb(233, 250, 134);
+    --primary-red: rgb(238, 33, 33);
+    --primary-text: white;
+}
+
+/*FOOTER*/
+
+
+.footer {
+    color: var(--primary-text-two);
+    background-color: var(--primary-green);
+}
+
+.footer h5 {
+    text-transform: uppercase;
+    font-size: 16px;
+    border-bottom: 1px solid rgb(233, 250, 134);
+    padding-bottom: 4px;
+}
+
+.footer a {
+    color: whitesmoke;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.footer a:hover {
+    color: rgb(233, 250, 134);
+    text-decoration: underline;
+}
+
+.footer li {
+    color: whitesmoke;
+}
+
+.footer li a {
+    display: block;
+}
+
+.footer-icons a {
+    display: inline-block;
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.footer-icons a img {
+    cursor: pointer;
+}

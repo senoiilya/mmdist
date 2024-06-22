@@ -5,6 +5,7 @@ import (
 	"github.com/senoiilya/mmdist/pkg"
 	"log"
 	"net/http"
+	"time"
 )
 
 var types = []string{pkg.PersonalComputerType, pkg.NotebookType, pkg.ServerType, "mono-block"}
@@ -25,6 +26,12 @@ type ViewData3 struct {
 	Id      int
 }
 
+type ViewLayout struct {
+	Title    string
+	Message  string
+	Computer string
+}
+
 // статичный файл
 //func mainHandler(w http.ResponseWriter, req *http.Request) {
 //	http.ServeFile(w, req, "ui/html/layout.html")
@@ -35,18 +42,23 @@ func main() {
 	//	Title:   "New Page2",
 	//	Message: "Hello World!",
 	//}
+
+	//var dir string
+
+	//flag.StringVar(&dir, "dir", "./static/", "the directory to serve files from. Defaults to the current dir")
+	//flag.Parse()
+
 	router := mux.NewRouter()
+	//router := http.NewServeMux()
+
+	//router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static/"))))
 
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", home)
-
-	router.HandleFunc("/test", test)
-	router.HandleFunc("/new", newTest)
-	//router.HandleFunc("/edit", func(w http.ResponseWriter, req *http.Request) {
-	//	tmpl, _ := template.ParseFiles("./ui/html/template.html")
-	//	tmpl.Execute(w, data)
-	//})
 	router.HandleFunc("/login", login)
+	router.HandleFunc("/products", products)
+	router.HandleFunc("/registration", registration)
+	router.HandleFunc("/userpage", userPage)
 
 	// Вывод классов
 	//for _, typeName := range types {
@@ -57,7 +69,18 @@ func main() {
 	//	computer.PrintDetails()
 	//}
 
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+	//router.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))
+
+	srv := &http.Server{
+		Handler:      router,
+		Addr:         "127.0.0.1:4000",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
 	log.Println("Сервер запущен на localhost:4000")
-	err := http.ListenAndServe(":4000", router)
+	err := srv.ListenAndServe()
 	log.Fatal(err)
 }
