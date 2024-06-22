@@ -27,3 +27,7 @@ func (pc PersonalComputer) GetType() string {
 func (pc PersonalComputer) PrintDetails() {
 	fmt.Printf("%s: Ядра:[%d], Оперативная память: [%d], Наличие монитора: [%v]\n", pc.Type, pc.Core, pc.Memory, pc.Monitor)
 }
+
+func (pc PersonalComputer) String() string {
+	return fmt.Sprintf("%s: Ядра:[%d], Оперативная память: [%d], Наличие монитора: [%v]\n", pc.Type, pc.Core, pc.Memory, pc.Monitor)
+}

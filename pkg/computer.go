@@ -13,6 +13,7 @@ const (
 type Computer interface {
 	GetType() string // тип
 	PrintDetails()   // вывод детализированной информации о самом объекте
+	String() string
 }
 
 // Фабричный метод, который будет инициализировать структуры

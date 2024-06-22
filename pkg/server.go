@@ -25,3 +25,7 @@ func (s Server) GetType() string {
 func (s Server) PrintDetails() {
 	fmt.Printf("%s: Ядра:[%d], Оперативная память: [%d]\n", s.Type, s.Core, s.Memory)
 }
+
+func (s Server) String() string {
+	return fmt.Sprintf("%s: Ядра:[%d], Оперативная память: [%d]\n", s.Type, s.Core, s.Memory)
+}

@@ -27,3 +27,7 @@ func (nb Notebook) GetType() string {
 func (nb Notebook) PrintDetails() {
 	fmt.Printf("%s: Ядра:[%d], Оперативная память: [%d], Наличие монитора: [%v]\n", nb.Type, nb.Core, nb.Memory, nb.Monitor)
 }
+
+func (nb Notebook) String() string {
+	return fmt.Sprintf("%s: Ядра:[%d], Оперативная память: [%d], Наличие монитора: [%v]\n", nb.Type, nb.Core, nb.Memory, nb.Monitor)
+}
