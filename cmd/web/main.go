@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/senoiilya/mmdist/pkg"
 	"log"
-	"mmdist/pkg"
 	"net/http"
 )
 

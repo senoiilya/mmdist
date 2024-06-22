@@ -30,7 +30,7 @@ func home(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
-	err = tmpl.Execute(w, data)
+	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
