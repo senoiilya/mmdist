@@ -1,4 +1,4 @@
-module mmdist
+module github.com/senoiilya/mmdist
 
 go 1.22
 
