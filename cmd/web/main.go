@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -78,7 +77,6 @@ func main() {
 	flagCfg := new(FlagsConfig)
 	// флаги при билде приложения через консоль
 	flag.StringVar(&flagCfg.Addr, "addr", ":4000", "Сетевой адресс HTTP")
-	flag.StringVar(&flagCfg.StaticDir, "static-dir", "./ui/static/", "Каталог, в котором будут храниться статичные файлы.\nПо умолчанию используется:")
 	// парсим, написанные в консоли флаги
 	flag.Parse()
 
@@ -92,16 +90,6 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	// маршрутизатор HTTP запросов
-	router := mux.NewRouter()
-
-	// Использование шаблонов для создания динамических html страниц
-	router.HandleFunc("/", app.home)
-	router.HandleFunc("/login", app.login)
-	router.HandleFunc("/products", app.products)
-	router.HandleFunc("/registration", app.registration)
-	router.HandleFunc("/user_page", app.userPage)
-
 	// Вывод классов
 	//for _, typeName := range types {
 	//	computer := pkg.New(typeName)
@@ -111,11 +99,8 @@ func main() {
 	//	computer.PrintDetails()
 	//}
 
-	fileServer := http.FileServer(neuteredFileSystem{http.Dir(flagCfg.StaticDir)})
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))
-
 	srv := &http.Server{
-		Handler:      router,
+		Handler:      app.routes(),
 		Addr:         fmt.Sprintf("127.0.0.1%s", flagCfg.Addr),
 		ErrorLog:     errorLog,
 		WriteTimeout: 15 * time.Second,
