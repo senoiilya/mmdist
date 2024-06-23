@@ -20,21 +20,19 @@ func (app *application) home(w http.ResponseWriter, req *http.Request) {
 
 	// если страница не главная, то откроет страницу Page Not Found
 	if req.URL.Path != "/" {
-		http.NotFound(w, req)
+		app.notFound(w)
 		return
 	}
 
 	//tmpl, err := template.ParseFiles("./ui/html/layout.html")
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 }
@@ -44,9 +42,10 @@ func (app *application) login(w http.ResponseWriter, req *http.Request) {
 		Title:   "List of users",
 		Message: []string{"Bob", "Sam", "Tom"},
 	}
-
+	/// тут чекнуть
 	if req.Method != "GET" {
-		http.Error(w, "Method Not Allowed", 405)
+		w.Header().Set("Allow", http.MethodGet)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -54,15 +53,14 @@ func (app *application) login(w http.ResponseWriter, req *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", dataArray)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
+		return
 	}
 }
 
@@ -72,32 +70,27 @@ func (app *application) registration(w http.ResponseWriter, r *http.Request) {
 		Message: "Войти",
 	}
 	files := []string{"./ui/html/layout.html", "../ui/html/login.html"}
-	// устаналвиваем какой HTTP - заголовок нам разрешён
-	w.Header().Set("Allow", http.MethodPost)
 
 	// упраление картой заголовков напрямую
 	//w.Header()["Date"] = nil
 
 	// проверка на метод POST
 	if r.Method != http.MethodPost {
-		// Не продвинутый подход к отправке ответа
-		//w.WriteHeader(405) // Записываем заголовок
-		//w.Write([]byte("GET-метод запрещён!"))
-		//return
-		http.Error(w, "Метод запрещён!", 405)
+		// устаналвиваем какой HTTP - заголовок нам разрешён
+		w.Header().Set("Allow", http.MethodPost)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
+		return
 	}
 }
 
@@ -108,7 +101,7 @@ func (app *application) userPage(w http.ResponseWriter, req *http.Request) {
 	// 404 - страница не найдена!
 	id, err := strconv.Atoi(req.URL.Query().Get("id"))
 	if err != nil || id < 1 {
-		http.NotFound(w, req)
+		app.notFound(w)
 		return
 	}
 	data := ViewData3{
@@ -120,33 +113,30 @@ func (app *application) userPage(w http.ResponseWriter, req *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
+		return
 	}
 }
 
 func (app *application) products(w http.ResponseWriter, req *http.Request) {
 	files := []string{"./ui/html/layout.html", "./ui/html/products.html"}
+	data := ViewLayout{Title: "Products", Message: "fsdfsd"}
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
 		return
 	}
 
-	data := ViewLayout{Title: "Products", Message: "fsdfsd"}
-
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err)
+		return
 	}
 }
