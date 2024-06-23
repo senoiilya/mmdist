@@ -3,14 +3,13 @@ package main
 import (
 	"github.com/senoiilya/mmdist/pkg"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 )
 
 // Controllers
 
-func home(w http.ResponseWriter, req *http.Request) {
+func (app *application) home(w http.ResponseWriter, req *http.Request) {
 	data := ViewLayout{
 		Title:    "Домашняя страница",
 		Message:  "Здесь находится рут страница",
@@ -28,19 +27,19 @@ func home(w http.ResponseWriter, req *http.Request) {
 	//tmpl, err := template.ParseFiles("./ui/html/layout.html")
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 }
 
-func login(w http.ResponseWriter, req *http.Request) {
+func (app *application) login(w http.ResponseWriter, req *http.Request) {
 	dataArray := ViewData2{
 		Title:   "List of users",
 		Message: []string{"Bob", "Sam", "Tom"},
@@ -55,19 +54,19 @@ func login(w http.ResponseWriter, req *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", dataArray)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
 
-func registration(w http.ResponseWriter, r *http.Request) {
+func (app *application) registration(w http.ResponseWriter, r *http.Request) {
 	data := ViewData{
 		Title:   "Login",
 		Message: "Войти",
@@ -91,18 +90,18 @@ func registration(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
 
-func userPage(w http.ResponseWriter, req *http.Request) {
+func (app *application) userPage(w http.ResponseWriter, req *http.Request) {
 	// Извлекаем значение параметра id из URL и попытаемся
 	// конвертировать строку в integer используя функцию strconv.Atoi(). Если его нельзя
 	// конвертировать в integer, или значение меньше 1, возвращаем ответ
@@ -121,24 +120,24 @@ func userPage(w http.ResponseWriter, req *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
 
-func products(w http.ResponseWriter, req *http.Request) {
+func (app *application) products(w http.ResponseWriter, req *http.Request) {
 	files := []string{"./ui/html/layout.html", "./ui/html/products.html"}
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
@@ -147,7 +146,7 @@ func products(w http.ResponseWriter, req *http.Request) {
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
