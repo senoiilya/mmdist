@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"os"
@@ -25,26 +27,45 @@ type application struct {
 type ViewData struct {
 	Title   string
 	Message string
+	IsAuth  bool
 }
 
 type ViewData2 struct {
 	Title   string
 	Message []string
+	IsAuth  bool
 }
 
 type ViewData3 struct {
 	Title   string
 	Message string
 	Id      int
+	IsAuth  bool
 }
 
 type ViewLayout struct {
 	Title    string
 	Message  string
+	IsAuth   bool
+	Username string
 	Computer string
 }
 
+type User struct {
+	Name     string
+	Age      uint
+	Birthday time.Time
+}
+
 func main() {
+	dsn := "host=localhost port=5432 dbname=test_db user=postgres password="
+	db, er := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if er != nil {
+		log.Fatal(er)
+	}
+	user := User{Name: "Ilia", Age: 18, Birthday: time.Now()}
+	result := db.Create(&user)
+	fmt.Println(result.RowsAffected)
 	flagCfg := new(FlagsConfig)
 	// флаги при билде приложения через консоль
 	flag.StringVar(&flagCfg.Addr, "addr", ":4000", "Сетевой адресс HTTP")
