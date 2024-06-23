@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ .Title }}</title>
-    <link rel="icon" href="" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-</head>
-<body>
-    <h1>{{ .Title}}</h1>
-    <p>{{ .Message}}</p>
-    <p>Отображение выбранной страницы с {{ .Id}}</p>
-    <a href="/">Назад</a>
-</body>
-</html>
+{{template "layout" .}}
+
+
+{{define "title"}}{{.Title}}{{end}}
+
+{{define "main"}}
+<div>
+    <p>{{.Message}}</p>
+</div>
+{{end}}

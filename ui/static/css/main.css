@@ -30,28 +30,57 @@ textarea {
     max-width: 360px;
 }
 
+:root {
+    --tm-color-lime: #c0ff01; /* Лаймовый */
+    --tm-color-light-lime: #dcff71;
+    --tm-color-soft-lime: #ebffad;
+    --tm-color-violet: #6046ff;
+    --tm-color-purpur: #9074ff;
+    --tm-color-light-black: #191a1b;
+    --tm-color-card-black: #212124;
+    --tm-color-dark-grey: #313233;
+    --tm-color-grey: #6d7175;
+    --tm-color-light-grey: #999898;
+    --tm-color-dark-white: #d3d7db;
+    --tm-color-white: #fff;         /* Белый */
+    --tm-color-error-red: #e97272;
+    --tm-color-yellow-tag: #e3ff8d;
+    --tm-color-violet-tag: #e3dcfd;
+    --tm-color-green-tag: #c5ffb7;
+    --tm-color-pink-tag: #ff8dfa;
+    --tm-color-blue-tag: #9bd3f2;
+}
 
 .custom-blog {
-    font-size: 4rem;
+    font-size: 1rem;
     color: green;
-    background-color: darkturquoise ;
+    background-color: darkturquoise;
 }
 
 
-:root {
-    --primary-green: #00624a;
-    --primary-logo: rgb(233, 250, 134);
-    --primary-text-two: rgb(233, 250, 134);
-    --primary-red: rgb(238, 33, 33);
-    --primary-text: white;
+/* HEADER */
+
+.header {
+    background-color: var(--tm-color-light-black);
+}
+
+.brand {
+    color: var(--tm-color-soft-lime) !important;
+}
+
+.navbar__ul-item {
+    color: var(--tm-color-soft-lime) !important;
+}
+
+.text {
+    color: var(--tm-color-white) !important;
 }
 
 /*FOOTER*/
 
-
 .footer {
-    color: var(--primary-text-two);
-    background-color: var(--primary-green);
+    color: var(--tm-color-soft-lime);
+    background-color: var(--tm-color-light-black);
 }
 
 .footer h5 {

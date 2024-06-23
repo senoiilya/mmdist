@@ -27,7 +27,7 @@
         <script defer src="/static/js/scripts/modernizr-2.6.2.js" type="text/javascript"></script>
     </head>
     <body class="vh-100 d-flex flex-column">
-        <header style="background-color: crimson">
+        <header class="header">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <a class="navbar-brand top-menu" href="/">
@@ -35,7 +35,7 @@
                              width="24"
                              height="24"
                              class="d-inline-block align-text-top" />
-                        <span style="color: green">TechoTrend</span>
+                        <span class="brand">TechoTrend</span>
                     </a>
                     <button class="navbar-toggler"
                             type="button"
@@ -49,27 +49,28 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 top-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Главная</a>
+                                <a class="nav-link navbar__ul-item" href="/">Главная</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/products">Каталог товаров</a>
+                                <a class="nav-link navbar__ul-item" href="/products">Каталог товаров</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/cart">Корзина</a>
+                                <a class="nav-link navbar__ul-item" href="/cart">Корзина</a>
                             </li>
-<!--                            {% if not user.is_authenticated %}-->
+                            {{if not .IsAuth}}
                             <li class="nav-item">
-                                <a class="nav-link" href="/registration">Регистрация</a>
+                                <a class="nav-link navbar__ul-item" href="/registration">Регистрация</a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="/login">Войти</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/userpage">Профиль</a>
-                            </li>
-<!--                            {% endif %}-->
+                            {{else}}
+{{/*                            <li>*/}}
+{{/*                                <a class="nav-link navbar__ul-item" href="/login">Войти</a>*/}}
+{{/*                            </li>*/}}
+{{/*                            <li class="nav-item">*/}}
+{{/*                                <a class="nav-link navbar__ul-item" href="/user_page">Профиль</a>*/}}
+{{/*                            </li>*/}}
+                            {{end}}
                         </ul>
-        <!--                {% include 'app/loginpartial.html' %}-->
+                        {{template "loginpartial" .}}
                     </div>
                 </div>
             </nav>
@@ -80,14 +81,14 @@
         </main>
         {{/*            <p>{{ .Message }}</p>*/}}
 
-        <footer class="mt-auto" style="background-color: coral">
+        <footer class="mt-auto footer">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-6">
                         <h5>Информация</h5>
                         <ul class="list-unstyled">
                             <li><a href="/">Главная</a></li>
-                            <li><a href="/userpage">Профиль</a></li>
+                            <li><a href="/user_page">Профиль</a></li>
                             <li><a href="/products">Каталог товаров</a></li>
                         </ul>
                     </div>

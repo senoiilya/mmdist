@@ -1,0 +1,57 @@
+{{define "loginpartial"}}
+    {{ if .IsAuth }}
+    <form id="logoutForm" action="/logout/" method="post">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toogle navbar__ul-item" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong>
+                        Привет, {{ .Username }}!
+                    </strong>
+                </a>
+                <ul class="dropdown-menu custom_ul">
+                    <li>
+                        <a class="dropdown-item" href="/user_page">Профиль</a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-item">
+                        <a class="nav-link navbar__ul-item" href="javascript:document.getElementById('logoutForm').submit()">
+                            <img src="/static/img/log-out.png" alt="log-out" sizes="24" class="d-inline-block" />
+                            Выйти
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </form>
+
+    <ul class="navbar-nav top-menu">
+        <li class="nav-item">
+            <a class="nav-link navbar__ul-item" href="/cart">
+                <img src="/static/img/shopping-cart.png"
+                     alt="cart"
+                     width="24"
+                     height="24"
+                     class="d-inline-block" />
+                Корзина
+            </a>
+        </li>
+    </ul>
+
+
+    {{else}}
+
+    <ul class="navbar-nav top-menu">
+        <li class="nav-item">
+            <a class="nav-link navbar__ul-item" href="/login">
+                <img src="/static/img/log-in.png"
+                     alt="log-in"
+                     width="24"
+                     height="24"
+                     class="d-inline-block" />
+                Войти
+            </a>
+        </li>
+    </ul>
+
+    {{end}}
+{{end}}
