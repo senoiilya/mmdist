@@ -24,7 +24,6 @@ func (app *application) home(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	//tmpl, err := template.ParseFiles("./ui/html/layout.html")
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
 		app.serverError(w, err)
