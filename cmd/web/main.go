@@ -38,20 +38,7 @@ type ViewLayout struct {
 //}
 
 func main() {
-	//data := ViewData{
-	//	Title:   "New Page2",
-	//	Message: "Hello World!",
-	//}
-
-	//var dir string
-
-	//flag.StringVar(&dir, "dir", "./static/", "the directory to serve files from. Defaults to the current dir")
-	//flag.Parse()
-
 	router := mux.NewRouter()
-	//router := http.NewServeMux()
-
-	//router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static/"))))
 
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", home)
@@ -70,7 +57,6 @@ func main() {
 	//}
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	//router.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))
 
 	srv := &http.Server{
