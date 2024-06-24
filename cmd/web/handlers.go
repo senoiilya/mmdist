@@ -7,13 +7,40 @@ import (
 	"strconv"
 )
 
+type ViewData struct {
+	Title   string
+	Message string
+	IsAuth  bool
+}
+
+type ViewData2 struct {
+	Title   string
+	Message []string
+	IsAuth  bool
+}
+
+type ViewData3 struct {
+	Title   string
+	Message string
+	Id      int
+	IsAuth  bool
+}
+
+type ViewLayout struct {
+	Title    string
+	Message  string
+	IsAuth   bool
+	Username string
+	Computer string
+}
+
 // Controllers
 
 func (app *application) home(w http.ResponseWriter, req *http.Request) {
 	data := ViewLayout{
 		Title:    "Домашняя страница",
 		Message:  "Здесь находится рут страница",
-		IsAuth:   true,
+		IsAuth:   false,
 		Username: "Илья",
 		Computer: pkg.New(pkg.NotebookType).String(),
 	}
@@ -97,7 +124,7 @@ func (app *application) registration(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) userPage(w http.ResponseWriter, req *http.Request) {
+func (app *application) userProfile(w http.ResponseWriter, req *http.Request) {
 	// Извлекаем значение параметра id из URL и попытаемся
 	// конвертировать строку в integer используя функцию strconv.Atoi(). Если его нельзя
 	// конвертировать в integer, или значение меньше 1, возвращаем ответ

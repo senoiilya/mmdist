@@ -3,9 +3,106 @@
 {{define "title"}}{{ .Title }}{{end}}
 
 {{define "main"}}
-    {{.Message}}
-{{end}}
-
-
-{{define "scripts"}}
+{{/*    <div class="container">*/}}
+{{/*        <div class="d-flex flex-row vh-100">*/}}
+{{/*            <div class="d-block p-2">*/}}
+{{/*                <div class="card" style="width: 18rem;">*/}}
+{{/*                    <img src="/static/img/favicon.png" class="card-img-top" alt="tovar">*/}}
+{{/*                    <div class="card-body">*/}}
+{{/*                        <h5 class="card-title">Card title</h5>*/}}
+{{/*                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*/}}
+{{/*                        <a href="#" class="btn btn-primary">Go somewhere</a>*/}}
+{{/*                    </div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*            <div class="d-block p-2">*/}}
+{{/*                <div class="card" style="width: 18rem;">*/}}
+{{/*                    <img src="/static/img/favicon.png" class="card-img-top" alt="tovar">*/}}
+{{/*                    <div class="card-body">*/}}
+{{/*                        <h5 class="card-title">Card title</h5>*/}}
+{{/*                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*/}}
+{{/*                        <a href="#" class="btn btn-primary">Go somewhere</a>*/}}
+{{/*                    </div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*            <div class="d-block p-2">*/}}
+{{/*                <div class="card" style="width: 18rem;">*/}}
+{{/*                    <img src="/static/img/favicon.png" class="card-img-top" alt="tovar">*/}}
+{{/*                    <div class="card-body">*/}}
+{{/*                        <h5 class="card-title">Card title</h5>*/}}
+{{/*                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*/}}
+{{/*                        <a href="#" class="btn btn-primary">Go somewhere</a>*/}}
+{{/*                    </div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*            <div class="d-block p-2">*/}}
+{{/*                <div class="card" style="width: 18rem;">*/}}
+{{/*                    <img src="/static/img/favicon.png" class="card-img-top" alt="tovar">*/}}
+{{/*                    <div class="card-body">*/}}
+{{/*                        <h5 class="card-title">Card title</h5>*/}}
+{{/*                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*/}}
+{{/*                        <a href="#" class="btn btn-primary">Go somewhere</a>*/}}
+{{/*                    </div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*            */}}
+{{/*        </div>*/}}
+{{/*    </div>*/}}
+    <div class="container p-2">
+        <!-- Сетка карточек товаров -->
+        <div class="cards">
+            <!-- Карточка товара -->
+            <div class="card">
+                <!-- Верхняя часть -->
+                <div class="card__top">
+                    <!-- Изображение-ссылка товара -->
+                    <a href="#" class="card__image">
+                        <img
+                                src="/static/img/favicon.png"
+                                alt="Apple IPhone 14 PRO Max Gold"
+                        />
+                    </a>
+{{/*                    <!-- Скидка на товар -->*/}}
+{{/*                    <div class="card__label">-10%</div>*/}}
+                </div>
+                <!-- Нижняя часть -->
+                <div class="card__bottom">
+                    <!-- Цены на товар (с учетом скидки и без)-->
+                    <div class="card__prices">
+                        <div class="card__price--common">Цена:</div>
+{{/*                        <div class="card__price card__price--discount">135 000</div>*/}}
+                        <div class="card__price card__price--common">150 000</div>
+                    </div>
+                    <!-- Ссылка-название товара -->
+                    <a href="#" class="card__title">
+                        Смартфон Apple IPhone 14 Pro Max 256Gb, золотой
+                    </a>
+                    <!-- Кнопка добавить в корзину -->
+                    <button class="card__add">В корзину</button>
+                </div>
+            </div>
+            <!-- Карточка товара -->
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+            <div class="card">
+                <!-- Карточка товара .. -->
+            </div>
+        </div>
+    </div>
 {{end}}

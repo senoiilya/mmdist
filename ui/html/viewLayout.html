@@ -3,11 +3,29 @@
 {{define "title"}}{{.Title }}{{end}}
 
 {{define "main"}}
-    <h2>Последние заметки</h2>
-    <p>Пока здесь ничего нет!</p>
-    <p>
-        {{.Computer}}
-    </p>
+    <div class="container">
+        <div class="d-flex flex-column align-items-center justify-content-center vh-100">
+            <div class="d-block p-2">
+                <span>Вы находитесь на главной странице TechoTrend!</span>
+            </div>
+            <div class="d-block p-2">
+                <p>
+                    На этом сайте вы можете просмотреть наши товары, добавить в корзину и купить!
+                </p>
+            </div>
+            <div class="d-block p-2">
+                <p>
+                    Желаем приятных покупок!
+                </p>
+            </div>
+            <div class="d-block p-2">
+                <span>Для того, чтобы купить нашу продукцию, вам надо зарегистрироваться!</span>
+            </div>
+            <div class="d-block bg_card">
+                <p class="mt-1 mx-1 mb-2">
+                    <a class="a-link" href="/registration">Зарегистрироваться</a>
+                </p>
+            </div>
+        </div>
+    </div>
 {{end}}
-
-{{define "scripts"}}{{end}}

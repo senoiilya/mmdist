@@ -34,8 +34,10 @@
                         <img src="/static/img/favicon.png"
                              width="24"
                              height="24"
-                             class="d-inline-block align-text-top" />
-                        <span class="brand">TechoTrend</span>
+                             class="d-inline-block align-text-top"
+                             style="background-color: var(--tm-color-soft-lime)"
+                        />
+                        <span class="logo">TechoTrend</span>
                     </a>
                     <button class="navbar-toggler"
                             type="button"
@@ -76,10 +78,9 @@
             </nav>
         </header>
 
-        <main class="custom-blog flex-grow-3">
+        <main class="flex-grow-3">
             {{template "main" .}}
         </main>
-        {{/*            <p>{{ .Message }}</p>*/}}
 
         <footer class="mt-auto footer">
             <div class="container">
@@ -88,7 +89,7 @@
                         <h5>Информация</h5>
                         <ul class="list-unstyled">
                             <li><a href="/">Главная</a></li>
-                            <li><a href="/user_page">Профиль</a></li>
+                            <li><a href="/profile">Профиль</a></li>
                             <li><a href="/products">Каталог товаров</a></li>
                         </ul>
                     </div>
