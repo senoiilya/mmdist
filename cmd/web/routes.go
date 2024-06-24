@@ -45,6 +45,7 @@ func (app *application) routes() *mux.Router {
 	router.HandleFunc("/registration", app.registration)
 	router.HandleFunc("/profile", app.userProfile)
 	router.HandleFunc("/cart", app.cart)
+	router.HandleFunc("/postLogin", app.postLogin)
 
 	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./ui/static/")})
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))

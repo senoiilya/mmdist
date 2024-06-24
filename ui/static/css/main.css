@@ -100,6 +100,13 @@ main {
     }
 }
 
+/* LOGIN */
+
+.login {
+    background-color: var(--tm-color-grey) !important;
+}
+
+
 /*FOOTER*/
 
 .footer {

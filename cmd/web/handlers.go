@@ -186,3 +186,7 @@ func (app *application) cart(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 	}
 }
+
+func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
+
+}
