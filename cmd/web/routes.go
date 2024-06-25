@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
 	"path/filepath"
+
+	"github.com/gorilla/mux"
 )
 
 // Настраиваемая файловая система, не позволяет пользователю открывать папки в static на сайте
@@ -40,7 +41,7 @@ func (app *application) routes() *mux.Router {
 
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", app.home)
-	router.HandleFunc("/login", app.login)
+	router.HandleFunc("/login", app.login).Methods("POST")
 	router.HandleFunc("/products", app.products)
 	router.HandleFunc("/registration", app.registration)
 	router.HandleFunc("/profile", app.userProfile)

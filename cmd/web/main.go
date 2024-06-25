@@ -7,6 +7,9 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/joho/godotenv"
+	"github.com/senoiilya/mmdist/pkg/models"
 )
 
 //var types = []string{pkg.PersonalComputerType, pkg.NotebookType, pkg.ServerType, "mono-block"}
@@ -38,6 +41,7 @@ func main() {
 	//user := User{Name: "Ilia", Age: 18, Birthday: time.Now()}
 	//result := db.Create(&user)
 	//fmt.Println(result.RowsAffected)
+
 	flagCfg := new(FlagsConfig)
 	// флаги при билде приложения через консоль
 	flag.StringVar(&flagCfg.Addr, "addr", ":4000", "Сетевой адресс HTTP")
@@ -53,6 +57,24 @@ func main() {
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
+
+	// Загрузка .env файла и создание подключения к базе данных
+	errEnv := godotenv.Load()
+	if errEnv != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	DBconfig := models.Config{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   os.Getenv("DB_NAME"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
+	}
+
+	// Инициализация базы данных
+	models.InitDB(DBconfig)
 
 	// Вывод классов
 	//for _, typeName := range types {
