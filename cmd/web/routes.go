@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/gorilla/mux"
+	"github.com/senoiilya/mmdist/middlewares"
 )
 
 // Настраиваемая файловая система, не позволяет пользователю открывать папки в static на сайте
@@ -41,12 +42,18 @@ func (app *application) routes() *mux.Router {
 
 	// Использование шаблонов для создания динамических html страниц
 	router.HandleFunc("/", app.home)
-	router.HandleFunc("/login", app.login).Methods("POST")
+	// router.HandleFunc("/login", app.login).Methods("POST")
 	router.HandleFunc("/products", app.products)
 	router.HandleFunc("/registration", app.registration)
 	router.HandleFunc("/profile", app.userProfile)
 	router.HandleFunc("/cart", app.cart)
 	router.HandleFunc("/postLogin", app.postLogin)
+
+	router.HandleFunc("/login", app.Login).Methods("POST")
+	router.HandleFunc("/signup", app.Signup).Methods("POST")
+	router.Handle("/home", middlewares.IsAuthorized(http.HandlerFunc(app.Home))).Methods("GET")
+	router.Handle("/premium", middlewares.IsAuthorized(http.HandlerFunc(app.Premium))).Methods("GET")
+	router.HandleFunc("/logout", app.Logout).Methods("GET")
 
 	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./ui/static/")})
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))

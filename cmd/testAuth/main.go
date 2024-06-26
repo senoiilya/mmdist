@@ -26,7 +26,7 @@ type Credentials struct {
 
 type Claims struct {
 	Username string `json:"username"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 func main() {
@@ -100,8 +100,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		expirationTime := time.Now().Add(5 * time.Minute)
 		claims := &Claims{
 			Username: creds.Username,
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: expirationTime.Unix(),
+			RegisteredClaims: jwt.RegisteredClaims{
+				ExpiresAt: &jwt.NumericDate{expirationTime},
 			},
 		}
 

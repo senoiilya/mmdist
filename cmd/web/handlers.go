@@ -1,10 +1,16 @@
 package main
 
 import (
-	"github.com/senoiilya/mmdist/pkg"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"strconv"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/senoiilya/mmdist/pkg"
+	"github.com/senoiilya/mmdist/pkg/models"
+	"github.com/senoiilya/mmdist/utils"
 )
 
 type ViewData struct {
@@ -33,6 +39,9 @@ type ViewLayout struct {
 	Username string
 	Computer string
 }
+
+// The string "my_secret_key" is just an example and should be replaced with a secret key of sufficient length and complexity in a real-world scenario.
+var jwtKey = []byte("my_secret_key")
 
 // Controllers
 
@@ -190,3 +199,151 @@ func (app *application) cart(w http.ResponseWriter, r *http.Request) {
 func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 
 }
+
+func (app *application) Login(w http.ResponseWriter, r *http.Request) {
+	var user models.User
+
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var existingUser models.User
+	models.DB.Where("email = ?", user.Email).First(&existingUser)
+
+	if existingUser.ID == 0 {
+		http.Error(w, "user does not exist", http.StatusBadRequest)
+		return
+	}
+
+	errHash := utils.CompareHashPassword(user.Password, existingUser.Password)
+	if !errHash {
+		http.Error(w, "invalid password", http.StatusBadRequest)
+		return
+	}
+
+	expirationTime := time.Now().Add(5 * time.Minute)
+	claims := &models.Claims{
+		Role: existingUser.Role,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Subject:   existingUser.Email,
+			ExpiresAt: &jwt.NumericDate{expirationTime},
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		http.Error(w, "could not generate token", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "token",
+		Value:    tokenString,
+		Expires:  expirationTime,
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	json.NewEncoder(w).Encode(map[string]string{"success": "user logged in"})
+}
+
+func (app *application) Signup(w http.ResponseWriter, r *http.Request) {
+	var user models.User
+
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var existingUser models.User
+	models.DB.Where("email = ?", user.Email).First(&existingUser) // ORM
+
+	// проверка на существование такого пользователя с таким email
+	if existingUser.ID != 0 {
+		http.Error(w, "user already exists", http.StatusBadRequest)
+		return
+	}
+
+	var errHash error
+	user.Password, errHash = utils.GenerateHashPassword(user.Password)
+	if errHash != nil {
+		http.Error(w, "could not generate password hash", http.StatusInternalServerError)
+		return
+	}
+
+	models.DB.Create(&user)
+	json.NewEncoder(w).Encode(map[string]string{"success": "user created"})
+}
+
+func (app *application) Home(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims, err := utils.ParseToken(cookie.Value)
+	if err != nil || (claims.Role != "user" && claims.Role != "admin") {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{"success": "home page", "role": claims.Role})
+}
+
+func (app *application) Premium(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims, err := utils.ParseToken(cookie.Value)
+	if err != nil || claims.Role != "admin" {
+		http.Error(w, "Not enough permissions", http.StatusForbidden)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{"success": "premium page", "role": claims.Role})
+}
+
+func (app *application) Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "token",
+		Value:    "",
+		MaxAge:   -1,
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	json.NewEncoder(w).Encode(map[string]string{"success": "user logged out"})
+}
+
+// func ResetPassword(w http.ResponseWriter, r *http.Request) {
+// 	var user models.User
+
+// 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+// 		http.Error(w, err.Error(), http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	var existingUser models.User
+// 	models.DB.Where("email = ?", user.Email).First(&existingUser)
+
+// 	if existingUser.ID == 0 {
+// 		http.Error(w, "user does not exist", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	var errHash error
+// 	user.Password, errHash = utils.GenerateHashPassword(user.Password)
+// 	if errHash != nil {
+// 		http.Error(w, "could not generate password hash", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	models.DB.Model(&existingUser).Update("password", user.Password)
+// 	json.NewEncoder(w).Encode(map[string]string{"success": "password updated"})
+// }

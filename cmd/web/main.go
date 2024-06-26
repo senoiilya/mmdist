@@ -73,6 +73,9 @@ func main() {
 		SSLMode:  os.Getenv("DB_SSLMODE"),
 	}
 
+	// Отладочный вывод
+	// fmt.Println(DBconfig)
+
 	// Инициализация базы данных
 	models.InitDB(DBconfig)
 
