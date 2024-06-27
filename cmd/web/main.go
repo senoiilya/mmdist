@@ -62,7 +62,7 @@ func main() {
 	// Загрузка .env файла и создание подключения к базе данных
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-		log.Fatal("Error loading .env file")
+		errorLog.Fatal("Error loading .env file")
 	}
 
 	DBconfig := models.Config{
@@ -192,6 +192,27 @@ func main() {
 
 		tx.Where("name = ?", "New PC").First(&category)
 		// SELECT * FROM users WHERE name = 'Ilia' ORDER BY id LIMIT 1;
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+		// READ
+		var product models.Product
+		tx.Raw("SELECT id, name FROM products WHERE name = ?", "Ноутбук ASUS TUF Gaming A15").Scan(&product)
+
+		// UPDATE
+		var users []models.User
+		tx.Raw("UPDATE users SET name = ? RETURNING id, name", "Ilia").Scan(&users)
+
+		// DELETE
+		tx.Raw("DELETE FROM users WHERE id = 2").Scan(&users)
+
+		// CREATE
+		var categories []models.Category
+		tx.Raw("INSERT INTO categories ('name') VALUES ('Smartphone')").Scan(&categories)
 
 		// nil, если ошибок нет и транзакция успешно отработала
 		return nil
