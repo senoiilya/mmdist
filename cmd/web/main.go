@@ -10,6 +10,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/senoiilya/mmdist/pkg/models"
+	"gorm.io/gorm"
 )
 
 //var types = []string{pkg.PersonalComputerType, pkg.NotebookType, pkg.ServerType, "mono-block"}
@@ -25,11 +26,11 @@ type application struct {
 	infoLog  *log.Logger
 }
 
-type User struct {
-	Name     string
-	Age      uint
-	Birthday time.Time
-}
+// type User struct {
+// 	Name     string
+// 	Age      uint
+// 	Birthday time.Time
+// }
 
 func main() {
 	// data base ORM
@@ -95,6 +96,106 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
+	// SQL and ORM
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+		if err := tx.Create(&models.Vendor{Name: "Asus"}).Error; err != nil {
+			return err
+		}
+		if err := tx.Create(&models.Vendor{Name: "Acer"}).Error; err != nil {
+			return err
+		}
+		if err := tx.Create(&models.Vendor{Name: "MSI"}).Error; err != nil {
+			return err
+		}
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+		if err := tx.Delete(&models.Vendor{Name: "Asus"}).Error; err != nil {
+			return err
+		}
+		if err := tx.Delete(&models.Vendor{Name: "Acer"}).Error; err != nil {
+			return err
+		}
+		if err := tx.Delete(&models.Vendor{Name: "MSI"}).Error; err != nil {
+			return err
+		}
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+		if err := tx.Delete(&models.Category{}, "3").Error; err != nil {
+			return err
+		}
+		if err := tx.Delete(&models.Category{}, "2").Error; err != nil {
+			return err
+		}
+		if err := tx.Delete(&models.Category{}, "1").Error; err != nil {
+			return err
+		}
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+		if err := tx.Model(models.Category{}).Where("name = ?", "Laptop").Updates(models.Category{Name: "New Laptop"}).Error; err != nil {
+			return err
+		}
+		// UPDATE categories SET name='New Laptop' WHERE name = 'Laptop';
+
+		if err := tx.Model(models.User{}).Where("role = ?", "admin").Updates(models.User{Name: "Ilia"}).Error; err != nil {
+			return err
+		}
+		// UPDATE users SET name='Ilia' WHERE role = 'admin';
+
+		if err := tx.Save(&models.Category{Name: "New PC"}).Error; err != nil { // Update
+			return err
+		}
+		var user models.User
+		tx.First(&user) // Read
+
+		user.Name = "Ilia"
+		user.Role = "admin"
+
+		if err := tx.Save(&user).Error; err != nil { // Update
+			return err
+		}
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
+
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		// return любой ошибки приведёт к откату(Rollback`у)
+
+		var (
+			user     models.User
+			product  models.Product
+			category models.Category
+		)
+		tx.First(&product) // Read
+		// SELECT * FROM products ORDER BY id LIMIT 1;
+
+		tx.First(&user, "10") // Read
+		// SELECT * FROM users WHERE id = 10;
+
+		tx.Where("name = ?", "New PC").First(&category)
+		// SELECT * FROM users WHERE name = 'Ilia' ORDER BY id LIMIT 1;
+
+		// nil, если ошибок нет и транзакция успешно отработала
+		return nil
+	})
 
 	infoLog.Printf("Сервер запущен на localhost%s", flagCfg.Addr)
 	err := srv.ListenAndServe()

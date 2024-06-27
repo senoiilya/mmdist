@@ -37,3 +37,17 @@ func InitDB(cfg Config) {
 
 	DB = db
 }
+
+// func ExecuteTransaction(db *gorm.DB, fn func(tx *gorm.DB) error) error {
+// 	transaction := db.Begin()
+// 	if transaction.Error != nil {
+// 		return transaction.Error
+// 	}
+
+// 	if err := fn(transaction); err != nil {
+// 		transaction.Rollback()
+// 		return err
+// 	}
+
+// 	return transaction.Commit().Error
+// }
