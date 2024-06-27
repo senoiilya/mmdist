@@ -29,7 +29,7 @@ func InitDB(cfg Config) {
 		panic(err)
 	}
 
-	if err := db.AutoMigrate(&User{}); err != nil {
+	if err := db.AutoMigrate(&User{}, &Vendor{}, &Category{}, &Order{}, &OrderProduct{}, &Product{}); err != nil {
 		panic(err)
 	}
 
